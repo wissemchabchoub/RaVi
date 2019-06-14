@@ -17,32 +17,32 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Interets extends AppCompatActivity {
+public class Restaurants extends AppCompatActivity {
 
     public FloatingActionButton next_btn;
 
-    private List<Answer> listOfInterests = new ArrayList<>();
+    private List<Answer> listOfCuisines = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_interests);
+        setContentView(R.layout.activity_restaurant);
 
         next_btn = findViewById(R.id.button);
 
-        listOfInterests.add(new Answer("Français", ContextCompat.getDrawable(this, R.drawable.cuisine_francaise)));
-        listOfInterests.add(new Answer("Chinois", ContextCompat.getDrawable(this, R.drawable.cuisine_francaise)));
-        listOfInterests.add(new Answer("Arménien", ContextCompat.getDrawable(this, R.drawable.cuisine_francaise)));
-        listOfInterests.add(new Answer("Indien", ContextCompat.getDrawable(this, R.drawable.cuisine_francaise)));
-        listOfInterests.add(new Answer("Marocain", ContextCompat.getDrawable(this, R.drawable.ic_launcher_background)));
+        listOfCuisines.add(new Answer("Français", ContextCompat.getDrawable(this, R.drawable.cuisine_francaise)));
+        listOfCuisines.add(new Answer("Chinois", ContextCompat.getDrawable(this, R.drawable.cuisine_francaise)));
+        listOfCuisines.add(new Answer("Arménien", ContextCompat.getDrawable(this, R.drawable.cuisine_francaise)));
+        listOfCuisines.add(new Answer("Indien", ContextCompat.getDrawable(this, R.drawable.cuisine_francaise)));
+        listOfCuisines.add(new Answer("Marocain", ContextCompat.getDrawable(this, R.drawable.ic_launcher_background)));
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
-        ItemAdapter itemAdapter = new ItemAdapter(listOfInterests);
+        ItemAdapter itemAdapter = new ItemAdapter(listOfCuisines);
         recyclerView.setAdapter(itemAdapter);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
     }
 
     public void onClickNextBtn(View view) {
-        startActivity(new Intent(this, NumberOfTravelers.class));
+        startActivity(new Intent(this, Interets.class));
     }
 }

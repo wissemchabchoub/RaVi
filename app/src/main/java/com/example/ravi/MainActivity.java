@@ -1,11 +1,12 @@
 package com.example.ravi;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.ravi.Quizz.Activities.Restaurant;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.ravi.Quizz.Activities.Restaurants;
+import com.example.ravi.Quizz.Activities.TypeOfTrip;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,6 +15,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        startActivity(new Intent(this, Restaurant.class));
+        startActivity(new Intent(this, Restaurants.class));
     }
 }

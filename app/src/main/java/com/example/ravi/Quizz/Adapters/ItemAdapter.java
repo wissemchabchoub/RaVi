@@ -11,7 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
-import com.example.ravi.Quizz.Activities.Restaurant;
+import com.example.ravi.Quizz.Activities.Interets;
+import com.example.ravi.Quizz.Activities.Restaurants;
 import com.example.ravi.Quizz.Answer;
 import com.example.ravi.R;
 
@@ -72,9 +73,11 @@ public class ItemAdapter  extends RecyclerView.Adapter<ItemAdapter.ItemViewHolde
                         nSelected--;
                     }
                     if (nSelected >= 3) {
-                        ((Restaurant) v.getContext()).next_btn.setVisibility(View.VISIBLE);
+                        if(v.getContext() instanceof Restaurants) ((Restaurants) v.getContext()).next_btn.setVisibility(View.VISIBLE);
+                        if(v.getContext() instanceof Interets) ((Interets) v.getContext()).next_btn.setVisibility(View.VISIBLE);
                     } else {
-                        ((Restaurant) v.getContext()).next_btn.setVisibility(View.GONE);
+                        if(v.getContext() instanceof Restaurants) ((Restaurants) v.getContext()).next_btn.setVisibility(View.GONE);
+                        if(v.getContext() instanceof Interets) ((Interets) v.getContext()).next_btn.setVisibility(View.GONE);
                     }
                 }
             });

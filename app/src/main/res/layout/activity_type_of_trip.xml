@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Quizz.Activities.Restaurants">
+    tools:context=".Quizz.Activities.NumberOfTravelers">
 
     <TextView
         android:id="@+id/question"
@@ -13,7 +13,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginVertical="16dp"
-        android:text="Sélectionnez 3 types de cuisine ou plus que vous aimez."
+        android:text="Indiquez de quel type de voyage il s'agit."
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
