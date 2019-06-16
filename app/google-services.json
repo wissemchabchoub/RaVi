@@ -1,42 +1,42 @@
 {
   "project_info": {
-    "project_number": "537101242111",
-    "firebase_url": "https://ravi-3c199.firebaseio.com",
-    "project_id": "ravi-3c199",
-    "storage_bucket": "ravi-3c199.appspot.com"
+    "project_number": "270720009499",
+    "firebase_url": "https://ravi-69170.firebaseio.com",
+    "project_id": "ravi-69170",
+    "storage_bucket": "ravi-69170.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:537101242111:android:df3ac4fe24d35bc5",
+        "mobilesdk_app_id": "1:270720009499:android:df3ac4fe24d35bc5",
         "android_client_info": {
           "package_name": "com.example.ravi"
         }
       },
       "oauth_client": [
         {
-          "client_id": "537101242111-ou5fj277lvc6jt92q2lnn082tt1gl0ud.apps.googleusercontent.com",
+          "client_id": "270720009499-trqjt7psimo0621lk3tf0101croqjqmh.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.ravi",
-            "certificate_hash": "6a1c1a558eb8251888bdb059491068bd69f8bebc"
+            "certificate_hash": "21d71c82acc7e5a230fe5c4da64d37bea4b7f2d7"
           }
         },
         {
-          "client_id": "537101242111-olib4mf1gb6omf4gr0apptqbjckbbmb4.apps.googleusercontent.com",
+          "client_id": "270720009499-rlpmqaq3prllv9hi2p59c2a3j7nlchcq.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCkc5rcXTilUleFnvN8c7EmV01pVmmy-BQ"
+          "current_key": "AIzaSyDpsaeWoqDsXffk-Tkr9T2mUG9k7wMMkF8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "537101242111-olib4mf1gb6omf4gr0apptqbjckbbmb4.apps.googleusercontent.com",
+              "client_id": "270720009499-rlpmqaq3prllv9hi2p59c2a3j7nlchcq.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
