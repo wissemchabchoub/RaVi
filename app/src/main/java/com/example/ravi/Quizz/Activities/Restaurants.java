@@ -31,10 +31,10 @@ public class Restaurants extends AppCompatActivity {
         next_btn = findViewById(R.id.button);
 
         listOfCuisines.add(new Answer("Français", ContextCompat.getDrawable(this, R.drawable.french)));
-        listOfCuisines.add(new Answer("Chinois", ContextCompat.getDrawable(this, R.drawable.french)));
-        listOfCuisines.add(new Answer("Arménien", ContextCompat.getDrawable(this, R.drawable.french)));
-        listOfCuisines.add(new Answer("Indien", ContextCompat.getDrawable(this, R.drawable.french)));
-        listOfCuisines.add(new Answer("Marocain", ContextCompat.getDrawable(this, R.drawable.ic_launcher_background)));
+        listOfCuisines.add(new Answer("Chinois", ContextCompat.getDrawable(this, R.drawable.chineese)));
+        listOfCuisines.add(new Answer("Japonais", ContextCompat.getDrawable(this, R.drawable.japonais)));
+        listOfCuisines.add(new Answer("Mexicain", ContextCompat.getDrawable(this, R.drawable.mexicain)));
+        listOfCuisines.add(new Answer("Méditerranéen", ContextCompat.getDrawable(this, R.drawable.mediterranean)));
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         ItemAdapter itemAdapter = new ItemAdapter(listOfCuisines);

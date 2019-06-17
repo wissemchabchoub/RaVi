@@ -30,11 +30,13 @@ public class Interets extends AppCompatActivity {
 
         next_btn = findViewById(R.id.button);
 
-        listOfInterests.add(new Answer("Français", ContextCompat.getDrawable(this, R.drawable.french)));
-        listOfInterests.add(new Answer("Chinois", ContextCompat.getDrawable(this, R.drawable.french)));
-        listOfInterests.add(new Answer("Arménien", ContextCompat.getDrawable(this, R.drawable.french)));
-        listOfInterests.add(new Answer("Indien", ContextCompat.getDrawable(this, R.drawable.french)));
-        listOfInterests.add(new Answer("Marocain", ContextCompat.getDrawable(this, R.drawable.ic_launcher_background)));
+        listOfInterests.add(new Answer("Architecture", ContextCompat.getDrawable(this, R.drawable.architecture)));
+        listOfInterests.add(new Answer("Arts", ContextCompat.getDrawable(this, R.drawable.arts)));
+        listOfInterests.add(new Answer("Aventure", ContextCompat.getDrawable(this, R.drawable.aventure)));
+        listOfInterests.add(new Answer("Histoire", ContextCompat.getDrawable(this, R.drawable.histoire)));
+        listOfInterests.add(new Answer("Shopping", ContextCompat.getDrawable(this, R.drawable.shopping)));
+        listOfInterests.add(new Answer("Nourriture", ContextCompat.getDrawable(this, R.drawable.nourriture)));
+        listOfInterests.add(new Answer("Détente", ContextCompat.getDrawable(this, R.drawable.detente)));
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         ItemAdapter itemAdapter = new ItemAdapter(listOfInterests);
