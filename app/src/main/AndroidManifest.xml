@@ -9,10 +9,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Quizz.Activities.Restaurants"></activity>
-        <activity android:name=".Quizz.Activities.Interets"></activity>
-        <activity android:name=".Quizz.Activities.NumberOfTravelers"></activity>
-        <activity android:name=".Quizz.Activities.TypeOfTrip"></activity>
+        <activity android:name=".Authentification.SignInActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Quizz.Activities.Restaurants" />
+        <activity android:name=".Quizz.Activities.Interets" />
+        <activity android:name=".Quizz.Activities.NumberOfTravelers" />
+        <activity android:name=".Quizz.Activities.TypeOfTrip" />
+        <activity android:name=".Authentification.SignUpActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
