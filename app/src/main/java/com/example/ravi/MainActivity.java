@@ -3,10 +3,13 @@ package com.example.ravi;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.ravi.Authentification.SignInActivity;
 import com.example.ravi.Quizz.Activities.Restaurants;
 import com.example.ravi.Quizz.Activities.TypeOfTrip;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -30,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
-        startActivity(new Intent(this, Restaurants.class));
+        //startActivity(new Intent(this, Restaurants.class));
     }
 
     @Override
@@ -57,6 +60,23 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+    @Override // To add the menu
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override //Menu event listener
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.deconnexion_settings:
+                Intent myInt = new Intent(MainActivity.this, SignInActivity.class);
+                startActivity(myInt);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 

@@ -2,6 +2,8 @@ package com.example.ravi.Quizz.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +11,8 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.ravi.Authentification.SignInActivity;
+import com.example.ravi.MainActivity;
 import com.example.ravi.Quizz.Adapters.ItemAdapter;
 import com.example.ravi.Quizz.Answer;
 import com.example.ravi.R;
@@ -47,4 +51,9 @@ public class Interets extends AppCompatActivity {
     public void onClickNextBtn(View view) {
         startActivity(new Intent(this, NumberOfTravelers.class));
     }
+
+
+
+
+
 }
