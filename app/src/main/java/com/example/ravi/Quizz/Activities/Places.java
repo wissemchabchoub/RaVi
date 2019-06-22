@@ -68,27 +68,27 @@ public class Places extends AppCompatActivity {
 
         next_btn = findViewById(R.id.button);
 
-        placesOfInterest.add(new Answer("Aéroport", ContextCompat.getDrawable(this, R.drawable.architecture)));
-        placesOfInterest.add(new Answer("Parc d'attraction", ContextCompat.getDrawable(this, R.drawable.arts)));
-        placesOfInterest.add(new Answer("Aquarium", ContextCompat.getDrawable(this, R.drawable.aventure)));
-        placesOfInterest.add(new Answer("Gallerie d'art", ContextCompat.getDrawable(this, R.drawable.histoire)));
-        placesOfInterest.add(new Answer("Bar", ContextCompat.getDrawable(this, R.drawable.shopping)));
-        placesOfInterest.add(new Answer("Bowling", ContextCompat.getDrawable(this, R.drawable.nourriture)));
-        placesOfInterest.add(new Answer("Café", ContextCompat.getDrawable(this, R.drawable.detente)));
-        placesOfInterest.add(new Answer("Camping", ContextCompat.getDrawable(this, R.drawable.detente)));
-        placesOfInterest.add(new Answer("Casino", ContextCompat.getDrawable(this, R.drawable.detente)));
-        placesOfInterest.add(new Answer("Église", ContextCompat.getDrawable(this, R.drawable.detente)));
-        placesOfInterest.add(new Answer("Temple hindou", ContextCompat.getDrawable(this, R.drawable.detente)));
-        placesOfInterest.add(new Answer("Discothèque", ContextCompat.getDrawable(this, R.drawable.detente)));
-        placesOfInterest.add(new Answer("Musée", ContextCompat.getDrawable(this, R.drawable.detente)));
-        placesOfInterest.add(new Answer("Cinéma", ContextCompat.getDrawable(this, R.drawable.detente)));
-        placesOfInterest.add(new Answer("Mosquée", ContextCompat.getDrawable(this, R.drawable.detente)));
-        placesOfInterest.add(new Answer("Parc", ContextCompat.getDrawable(this, R.drawable.detente)));
-        placesOfInterest.add(new Answer("Restaurant", ContextCompat.getDrawable(this, R.drawable.detente)));
-        placesOfInterest.add(new Answer("Centre commercial", ContextCompat.getDrawable(this, R.drawable.detente)));
-        placesOfInterest.add(new Answer("Stade", ContextCompat.getDrawable(this, R.drawable.detente)));
-        placesOfInterest.add(new Answer("Synagogue", ContextCompat.getDrawable(this, R.drawable.detente)));
-        placesOfInterest.add(new Answer("Zoo", ContextCompat.getDrawable(this, R.drawable.detente)));
+        placesOfInterest.add(new Answer("Aéroport", ContextCompat.getDrawable(this, R.drawable.airport)));
+        placesOfInterest.add(new Answer("Parc d'attraction", ContextCompat.getDrawable(this, R.drawable.Amusement_Park)));
+        placesOfInterest.add(new Answer("Aquarium", ContextCompat.getDrawable(this, R.drawable.AQUARIUM)));
+        placesOfInterest.add(new Answer("Gallerie d'art", ContextCompat.getDrawable(this, R.drawable.ART_GALERRY)));
+        placesOfInterest.add(new Answer("Bar", ContextCompat.getDrawable(this, R.drawable.BAR)));
+        placesOfInterest.add(new Answer("Bowling", ContextCompat.getDrawable(this, R.drawable.BOWLING)));
+        placesOfInterest.add(new Answer("Café", ContextCompat.getDrawable(this, R.drawable.CAFE)));
+        placesOfInterest.add(new Answer("Camping", ContextCompat.getDrawable(this, R.drawable.Campground)));
+        placesOfInterest.add(new Answer("Casino", ContextCompat.getDrawable(this, R.drawable.casino)));
+        placesOfInterest.add(new Answer("Église", ContextCompat.getDrawable(this, R.drawable.church)));
+        placesOfInterest.add(new Answer("Temple hindou", ContextCompat.getDrawable(this, R.drawable.Hindu)));
+        placesOfInterest.add(new Answer("Discothèque", ContextCompat.getDrawable(this, R.drawable.nightclub)));
+        placesOfInterest.add(new Answer("Musée", ContextCompat.getDrawable(this, R.drawable.museum)));
+        placesOfInterest.add(new Answer("Cinéma", ContextCompat.getDrawable(this, R.drawable.movie_theater)));
+        placesOfInterest.add(new Answer("Mosquée", ContextCompat.getDrawable(this, R.drawable.mosquee)));
+        placesOfInterest.add(new Answer("Parc", ContextCompat.getDrawable(this, R.drawable.park)));
+        placesOfInterest.add(new Answer("Restaurant", ContextCompat.getDrawable(this, R.drawable.french)));
+        placesOfInterest.add(new Answer("Centre commercial", ContextCompat.getDrawable(this, R.drawable.mall)));
+        placesOfInterest.add(new Answer("Stade", ContextCompat.getDrawable(this, R.drawable.satde)));
+        placesOfInterest.add(new Answer("Synagogue", ContextCompat.getDrawable(this, R.drawable.Synagogue)));
+        placesOfInterest.add(new Answer("Zoo", ContextCompat.getDrawable(this, R.drawable.zoo)));
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         ItemAdapter itemAdapter = new ItemAdapter(placesOfInterest);
