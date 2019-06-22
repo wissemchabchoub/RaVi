@@ -11,38 +11,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <CheckBox
-                android:id="@+id/use_custom_fields"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Manually set Place Fields?"/>
-
-            <TextView
-                android:id="@+id/custom_fields_list"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-        </LinearLayout>
 
         <Button
             android:id="@+id/find_current_place_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="coucou"/>
+            android:text="Rechercher les lieux près de moi"/>
 
-        <CheckBox
-            android:id="@+id/display_raw_results"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="false"
-            android:text="coucou"/>
 
         <ProgressBar
             android:id="@+id/loading"
