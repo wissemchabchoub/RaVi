@@ -22,6 +22,9 @@ import com.google.android.libraries.places.api.model.PlaceLikelihood;
 import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
 import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
+import com.vikramezhil.droidspeech.DroidSpeech;
+import com.vikramezhil.droidspeech.OnDSListener;
+import com.vikramezhil.droidspeech.OnDSPermissionsListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,12 +33,15 @@ import java.util.List;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.ACCESS_WIFI_STATE;
 
-public class LocalisationActivity extends AppCompatActivity {
+public class LocalisationActivity extends AppCompatActivity implements OnDSListener, OnDSPermissionsListener {
 
     int placeNum = 0;
+    private DroidSpeech displayDroidSpeech;
     private PlacesClient placesClient;
     List<Place.Field> placeFields;
+
     private TextView responseView;
+
     List<String> preferences;
     List<Place> places = new ArrayList<>();
 
@@ -49,8 +55,7 @@ public class LocalisationActivity extends AppCompatActivity {
         String replace = data.replace("[","");
         String replace1 = replace.replace("]","");
         preferences = new ArrayList<>(Arrays.asList(replace1.split(",")));
-        preferences.add("PREMISE");
-        preferences.add("BUS_STATION");
+        preferences.add("ESTABLISHMENT");
 
         String apiKey = getString(R.string.places_api_key);
 
@@ -77,11 +82,16 @@ public class LocalisationActivity extends AppCompatActivity {
         responseView = findViewById(R.id.response);
         setLoading(false);
 
-        findViewById(R.id.find_current_place_button).setOnClickListener((view) -> findCurrentPlace());
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, 1);
+
+        displayDroidSpeech = new DroidSpeech(getApplicationContext(), null);
+        displayDroidSpeech.setOnDroidSpeechListener(this);
+        displayDroidSpeech.setShowRecognitionProgressView(false);
+        displayDroidSpeech.startDroidSpeechRecognition();
     }
 
     // vérification des permissions
-    private void findCurrentPlace() {
+    private void findPlacesAround() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_WIFI_STATE)
                 != PackageManager.PERMISSION_GRANTED
                 || ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -94,13 +104,13 @@ public class LocalisationActivity extends AppCompatActivity {
         }
 
         if (checkPermission(ACCESS_FINE_LOCATION)) {
-            findCurrentPlaceWithPermissions();
+            findPlacesAroundWithPermissions();
         }
     }
 
     // récupération des lieux aux alentours
     @RequiresPermission(allOf = {ACCESS_FINE_LOCATION, ACCESS_WIFI_STATE})
-    private void findCurrentPlaceWithPermissions() {
+    private void findPlacesAroundWithPermissions() {
         setLoading(true);
 
         FindCurrentPlaceRequest currentPlaceRequest =
@@ -111,7 +121,6 @@ public class LocalisationActivity extends AppCompatActivity {
         currentPlaceTask.addOnSuccessListener(
                 (response) ->
                         matchWithPreferences(response));
-                //responseView.setText(StringUtil.stringify(response)));
 
         currentPlaceTask.addOnFailureListener(
                 (exception) -> {
@@ -122,11 +131,9 @@ public class LocalisationActivity extends AppCompatActivity {
         currentPlaceTask.addOnCompleteListener(task -> setLoading(false));
     }
 
-
     private void matchWithPreferences(FindCurrentPlaceResponse response) {
         placeNum = 0;
         for(int i = 0; i < response.getPlaceLikelihoods().size(); i++) {
-        //for (PlaceLikelihood placeLikelihood : response.getPlaceLikelihoods()) {
             for(String preference: preferences) {
                 if(response.getPlaceLikelihoods().get(i).getPlace().getTypes().toString().contains(preference)) {
                     places.add(response.getPlaceLikelihoods().get(i).getPlace());
@@ -136,11 +143,12 @@ public class LocalisationActivity extends AppCompatActivity {
         }
         nextPlace();
     }
-    //luca@gmail.com
 
     private void nextPlace() {
         if(placeNum < places.size()) {
-            responseView.setText(places.get(placeNum).getName() + " " + places.get(placeNum).getTypes().toString());
+            TextView name = findViewById(R.id.placeName);
+            name.setText(places.get(placeNum).getName());
+            responseView.setText(places.get(placeNum).getAddress());
             placeNum++;
         }
         else {
@@ -172,7 +180,61 @@ public class LocalisationActivity extends AppCompatActivity {
         return placeFields;
     }
 
-    public void nextPlace(View view) {
-        nextPlace();
+    @Override
+    public void onDroidSpeechSupportedLanguages(String currentSpeechLanguage, List<String> supportedSpeechLanguages) {
+        if(supportedSpeechLanguages.contains("fr-FR")) {
+            displayDroidSpeech.setPreferredLanguage("fr-FR");
+        }
+    }
+
+    @Override
+    public void onDroidSpeechRmsChanged(float rmsChangedValue) {
+
+    }
+
+    @Override
+    public void onDroidSpeechLiveResult(String liveSpeechResult) {
+
+    }
+
+    @Override
+    public void onDroidSpeechFinalResult(String finalSpeechResult) {
+        // si le mot "chercher" est prononcé, on cherche les lieux aux alentours
+        if (finalSpeechResult.equalsIgnoreCase("Chercher") ||
+                finalSpeechResult.toLowerCase().contains("chercher")) {
+            findPlacesAround();
+        }
+
+        // si le mot "suivant" est prononcé, on affiche un autre lieux
+        if (finalSpeechResult.equalsIgnoreCase("Suivant") ||
+                finalSpeechResult.toLowerCase().contains("suivant")) {
+            nextPlace();
+        }
+    }
+
+    @Override
+    public void onDroidSpeechClosedByUser() {
+
+    }
+
+    @Override
+    public void onDroidSpeechError(String errorMsg) {
+        displayDroidSpeech.closeDroidSpeechOperations();
+        responseView.setText("La reconnaissance vocale a rencontré un problème : " + errorMsg);
+
+        displayDroidSpeech.closeDroidSpeechOperations();
+    }
+
+    @Override
+    public void onDroidSpeechAudioPermissionStatus(boolean audioPermissionGiven, String errorMsgIfAny) {
+        if(audioPermissionGiven) {
+            displayDroidSpeech.startDroidSpeechRecognition();
+        }
+        else {
+            if(errorMsgIfAny != null)
+                responseView.setText("La reconnaissance vocale a rencontré un problème : " + errorMsgIfAny);
+
+            displayDroidSpeech.closeDroidSpeechOperations();
+        }
     }
 }
