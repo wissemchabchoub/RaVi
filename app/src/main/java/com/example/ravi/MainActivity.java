@@ -19,12 +19,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseDatabase mDatabase;
     private FirebaseUser currentUser;
     private User user;
+    private List placesOfInterest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 user = dataSnapshot.getValue(User.class);
+                placesOfInterest = user.preferences.get("placesOfInterest"); // A UTILISER UNIQUEMENT DANS onDataChange()
                 if(!user.isQuizzDone()) startActivity(new Intent(MainActivity.this, Interests.class));
             }
 
