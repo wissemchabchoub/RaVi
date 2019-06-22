@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.ravi.Quizz.Activities.Interests;
 import com.example.ravi.Quizz.Activities.Restaurants;
 import com.example.ravi.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -17,6 +18,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.IgnoreExtraProperties;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -54,9 +58,15 @@ public class SignUpActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("RaVi", "createUserWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            FirebaseUser currentUser = mAuth.getCurrentUser();
 //                            updateUI(user);
-                            startActivity(new Intent(SignUpActivity.this, Restaurants.class));
+
+                            User user = new User(currentUser.getEmail(), currentUser.getUid());
+
+                            FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+                            mDatabase.getReference().child("users").child(currentUser.getUid()).setValue(user);
+
+                            startActivity(new Intent(SignUpActivity.this, Interests.class));
 
                         } else {
                             // If sign in fails, display a message to the user.

@@ -16,8 +16,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Quizz.Activities.Interests" />
+        <activity android:name=".Quizz.Activities.Places" />
         <activity android:name=".Quizz.Activities.Restaurants" />
-        <activity android:name=".Quizz.Activities.Interets" />
         <activity android:name=".Quizz.Activities.NumberOfTravelers" />
         <activity android:name=".Quizz.Activities.TypeOfTrip" />
         <activity android:name=".Authentification.SignUpActivity" />

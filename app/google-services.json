@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "270720009499-tvja9cdp4gcr8dq9i9qa4a4pgnsa4sls.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ravi",
+            "certificate_hash": "c49a231ff46bfa775ca4da687f26f269bd1533cb"
+          }
+        },
+        {
           "client_id": "270720009499-hmsgj2ji6epckos8rgl1ksje9du8mea0.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

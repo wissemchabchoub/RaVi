@@ -11,7 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
-import com.example.ravi.Quizz.Activities.Interets;
+import com.example.ravi.Quizz.Activities.Interests;
+import com.example.ravi.Quizz.Activities.Places;
 import com.example.ravi.Quizz.Activities.Restaurants;
 import com.example.ravi.Quizz.Answer;
 import com.example.ravi.R;
@@ -74,10 +75,12 @@ public class ItemAdapter  extends RecyclerView.Adapter<ItemAdapter.ItemViewHolde
                     }
                     if (nSelected >= 3) {
                         if(v.getContext() instanceof Restaurants) ((Restaurants) v.getContext()).next_btn.setVisibility(View.VISIBLE);
-                        if(v.getContext() instanceof Interets) ((Interets) v.getContext()).next_btn.setVisibility(View.VISIBLE);
+                        if(v.getContext() instanceof Interests) ((Interests) v.getContext()).next_btn.setVisibility(View.VISIBLE);
+                        if(v.getContext() instanceof Places) ((Places) v.getContext()).next_btn.setVisibility(View.VISIBLE);
                     } else {
                         if(v.getContext() instanceof Restaurants) ((Restaurants) v.getContext()).next_btn.setVisibility(View.GONE);
-                        if(v.getContext() instanceof Interets) ((Interets) v.getContext()).next_btn.setVisibility(View.GONE);
+                        if(v.getContext() instanceof Interests) ((Interests) v.getContext()).next_btn.setVisibility(View.GONE);
+                        if(v.getContext() instanceof Places) ((Places) v.getContext()).next_btn.setVisibility(View.GONE);
                     }
                 }
             });
