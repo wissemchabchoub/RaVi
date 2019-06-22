@@ -27,8 +27,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:textStyle="bold"
-        android:textSize="28sp"
-        tools:text="Le mont saint michel"/>
+        android:textSize="28sp"/>
     <TextView
         android:id="@+id/response"
         android:textIsSelectable="true"
@@ -40,7 +39,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:textSize="20sp"
-        tools:text="23 rue de la rue garenne à Orleans"/>
+        android:textSize="20sp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

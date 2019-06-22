@@ -32,65 +32,76 @@ import java.util.List;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.ACCESS_WIFI_STATE;
+import static android.Manifest.permission.RECORD_AUDIO;
 
 public class LocalisationActivity extends AppCompatActivity implements OnDSListener, OnDSPermissionsListener {
 
-    int placeNum = 0;
+    // reconnaissance vocale
     private DroidSpeech displayDroidSpeech;
+
+    // API Places
     private PlacesClient placesClient;
-    List<Place.Field> placeFields;
-
-    private TextView responseView;
-
-    List<String> preferences;
     List<Place> places = new ArrayList<>();
+    int placeNum = 0;
+
+    // affichage
+    private TextView responseView;
+    private TextView name;
+
+    // préférences utilisateur
+    List<String> preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_localisation);
 
-        Intent intent = getIntent();
-        String data = intent.getStringExtra("preferences");
-        String replace = data.replace("[","");
-        String replace1 = replace.replace("]","");
-        preferences = new ArrayList<>(Arrays.asList(replace1.split(",")));
-        preferences.add("ESTABLISHMENT");
-
-        String apiKey = getString(R.string.places_api_key);
-
-        // initialisation de l'API Places
-        Places.initialize(getApplicationContext(), apiKey);
-        // géolocalisation
-        placesClient = Places.createClient(this);
-
-        // ci-dessous sont listés les champs à ne pas récupérer
-        placeFields = getPlaceFields(
-                Place.Field.ID,
-                Place.Field.LAT_LNG,
-                Place.Field.PHOTO_METADATAS,
-                Place.Field.PLUS_CODE,
-                Place.Field.PRICE_LEVEL,
-                Place.Field.USER_RATINGS_TOTAL,
-                Place.Field.VIEWPORT,
-                Place.Field.ADDRESS_COMPONENTS,
-                Place.Field.PHONE_NUMBER,
-                Place.Field.WEBSITE_URI,
-                Place.Field.OPENING_HOURS
-        );
-
+        // récupération de l'affichage
         responseView = findViewById(R.id.response);
+        name = findViewById(R.id.placeName);
         setLoading(false);
 
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, 1);
+        // récupération des préférences
+        getPreferences();
 
+        // initialisation de l'API Places
+        Places.initialize(getApplicationContext(), getString(R.string.places_api_key));
+        placesClient = Places.createClient(this);
+
+        ActivityCompat.requestPermissions(this, new String[]{RECORD_AUDIO}, 1);
+
+        // initialisation de la reconnaissance vocale
         displayDroidSpeech = new DroidSpeech(getApplicationContext(), null);
         displayDroidSpeech.setOnDroidSpeechListener(this);
         displayDroidSpeech.setShowRecognitionProgressView(false);
         displayDroidSpeech.startDroidSpeechRecognition();
     }
 
-    // vérification des permissions
+    // récupération des préférences
+    private void getPreferences() {
+        Intent intent = getIntent();
+        String data = intent.getStringExtra("preferences");
+        String replace = data.replace("[","");
+        String replace1 = replace.replace("]","");
+        preferences = new ArrayList<>(Arrays.asList(replace1.split(",")));
+        preferences.add("ESTABLISHMENT");
+    }
+
+    // lorsque l'activité passe en pause on arrête la reconnaissance vocale
+    @Override
+    protected void onPause() {
+        super.onPause();
+        displayDroidSpeech.closeDroidSpeechOperations();
+    }
+
+    // lorsque l'activité est de nouveau active on reprend la reconnaissance vocale
+    @Override
+    protected void onResume() {
+        super.onResume();
+        displayDroidSpeech.startDroidSpeechRecognition();
+    }
+
+    // vérification des permissions pour accéder à l'API Places
     private void findPlacesAround() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_WIFI_STATE)
                 != PackageManager.PERMISSION_GRANTED
@@ -111,16 +122,19 @@ public class LocalisationActivity extends AppCompatActivity implements OnDSListe
     // récupération des lieux aux alentours
     @RequiresPermission(allOf = {ACCESS_FINE_LOCATION, ACCESS_WIFI_STATE})
     private void findPlacesAroundWithPermissions() {
+        placeNum = 0;
         setLoading(true);
 
         FindCurrentPlaceRequest currentPlaceRequest =
-                FindCurrentPlaceRequest.newInstance(placeFields);
+                FindCurrentPlaceRequest.newInstance(getPlaceFields());
         Task<FindCurrentPlaceResponse> currentPlaceTask =
                 placesClient.findCurrentPlace(currentPlaceRequest);
 
         currentPlaceTask.addOnSuccessListener(
-                (response) ->
-                        matchWithPreferences(response));
+                (response) -> {
+                    matchWithPreferences(response);
+                    nextPlace();
+                });
 
         currentPlaceTask.addOnFailureListener(
                 (exception) -> {
@@ -131,8 +145,9 @@ public class LocalisationActivity extends AppCompatActivity implements OnDSListe
         currentPlaceTask.addOnCompleteListener(task -> setLoading(false));
     }
 
+    // filtrage des lieux qui correspondent aux préférences de l'utilisateur
     private void matchWithPreferences(FindCurrentPlaceResponse response) {
-        placeNum = 0;
+        places = new ArrayList<>();
         for(int i = 0; i < response.getPlaceLikelihoods().size(); i++) {
             for(String preference: preferences) {
                 if(response.getPlaceLikelihoods().get(i).getPlace().getTypes().toString().contains(preference)) {
@@ -141,22 +156,24 @@ public class LocalisationActivity extends AppCompatActivity implements OnDSListe
                 }
             }
         }
-        nextPlace();
     }
 
+    // affichage d'un lieu en suivant l'ordre de la liste des lieux qui pourrait intéresser l'utilisateur
     private void nextPlace() {
         if(placeNum < places.size()) {
-            TextView name = findViewById(R.id.placeName);
+
             name.setText(places.get(placeNum).getName());
             responseView.setText(places.get(placeNum).getAddress());
             placeNum++;
         }
         else {
+            name.setText("Oups...");
             responseView.setText("Nous n'avons plus de lieux à vous proposer, veuillez refaire une recherche.");
         }
 
     }
 
+    // demande de permission
     private boolean checkPermission(String permission) {
         boolean hasPermission =
                 ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED;
@@ -171,15 +188,29 @@ public class LocalisationActivity extends AppCompatActivity implements OnDSListe
         findViewById(R.id.loading).setVisibility(loading ? View.VISIBLE : View.INVISIBLE);
     }
 
-    // récupération des champs attaché à un lieu
-    static List<Place.Field> getPlaceFields(Place.Field... placeFieldsToOmit) {
+    // déclaration des champs que l'on souhaite récupérer avec l'API Places
+    static List<Place.Field> getPlaceFields() {
 
         List<Place.Field> placeFields = new ArrayList<>(Arrays.asList(Place.Field.values()));
-        placeFields.removeAll(Arrays.asList(placeFieldsToOmit));
+        placeFields.removeAll(Arrays.asList(
+                Place.Field.ID,
+                Place.Field.LAT_LNG,
+                Place.Field.PHOTO_METADATAS,
+                Place.Field.PLUS_CODE,
+                Place.Field.PRICE_LEVEL,
+                Place.Field.USER_RATINGS_TOTAL,
+                Place.Field.VIEWPORT,
+                Place.Field.ADDRESS_COMPONENTS,
+                Place.Field.PHONE_NUMBER,
+                Place.Field.WEBSITE_URI,
+                Place.Field.OPENING_HOURS
+        ));
 
         return placeFields;
     }
 
+
+    // langue pour la reconnaissance vocale
     @Override
     public void onDroidSpeechSupportedLanguages(String currentSpeechLanguage, List<String> supportedSpeechLanguages) {
         if(supportedSpeechLanguages.contains("fr-FR")) {
@@ -188,14 +219,10 @@ public class LocalisationActivity extends AppCompatActivity implements OnDSListe
     }
 
     @Override
-    public void onDroidSpeechRmsChanged(float rmsChangedValue) {
-
-    }
+    public void onDroidSpeechRmsChanged(float rmsChangedValue) { }
 
     @Override
-    public void onDroidSpeechLiveResult(String liveSpeechResult) {
-
-    }
+    public void onDroidSpeechLiveResult(String liveSpeechResult) { }
 
     @Override
     public void onDroidSpeechFinalResult(String finalSpeechResult) {
@@ -213,10 +240,9 @@ public class LocalisationActivity extends AppCompatActivity implements OnDSListe
     }
 
     @Override
-    public void onDroidSpeechClosedByUser() {
+    public void onDroidSpeechClosedByUser() { }
 
-    }
-
+    // en cas d'erreur de la reconnaissance vocale, on affiche un message
     @Override
     public void onDroidSpeechError(String errorMsg) {
         displayDroidSpeech.closeDroidSpeechOperations();
@@ -225,6 +251,7 @@ public class LocalisationActivity extends AppCompatActivity implements OnDSListe
         displayDroidSpeech.closeDroidSpeechOperations();
     }
 
+    // en cas de permission manquante, on affiche un message
     @Override
     public void onDroidSpeechAudioPermissionStatus(boolean audioPermissionGiven, String errorMsgIfAny) {
         if(audioPermissionGiven) {
