@@ -6,16 +6,19 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ravi.Authentification.User;
 import com.example.ravi.R;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.PlaceLikelihood;
 import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
 import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
@@ -29,14 +32,25 @@ import static android.Manifest.permission.ACCESS_WIFI_STATE;
 
 public class LocalisationActivity extends AppCompatActivity {
 
+    int placeNum = 0;
     private PlacesClient placesClient;
     List<Place.Field> placeFields;
     private TextView responseView;
+    List<String> preferences;
+    List<Place> places = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_localisation);
+
+        Intent intent = getIntent();
+        String data = intent.getStringExtra("preferences");
+        String replace = data.replace("[","");
+        String replace1 = replace.replace("]","");
+        preferences = new ArrayList<>(Arrays.asList(replace1.split(",")));
+        preferences.add("PREMISE");
+        preferences.add("BUS_STATION");
 
         String apiKey = getString(R.string.places_api_key);
 
@@ -96,7 +110,8 @@ public class LocalisationActivity extends AppCompatActivity {
 
         currentPlaceTask.addOnSuccessListener(
                 (response) ->
-                        responseView.setText(StringUtil.stringify(response)));
+                        matchWithPreferences(response));
+                //responseView.setText(StringUtil.stringify(response)));
 
         currentPlaceTask.addOnFailureListener(
                 (exception) -> {
@@ -105,6 +120,33 @@ public class LocalisationActivity extends AppCompatActivity {
                 });
 
         currentPlaceTask.addOnCompleteListener(task -> setLoading(false));
+    }
+
+
+    private void matchWithPreferences(FindCurrentPlaceResponse response) {
+        placeNum = 0;
+        for(int i = 0; i < response.getPlaceLikelihoods().size(); i++) {
+        //for (PlaceLikelihood placeLikelihood : response.getPlaceLikelihoods()) {
+            for(String preference: preferences) {
+                if(response.getPlaceLikelihoods().get(i).getPlace().getTypes().toString().contains(preference)) {
+                    places.add(response.getPlaceLikelihoods().get(i).getPlace());
+                    i++;
+                }
+            }
+        }
+        nextPlace();
+    }
+    //luca@gmail.com
+
+    private void nextPlace() {
+        if(placeNum < places.size()) {
+            responseView.setText(places.get(placeNum).getName() + " " + places.get(placeNum).getTypes().toString());
+            placeNum++;
+        }
+        else {
+            responseView.setText("Nous n'avons plus de lieux à vous proposer, veuillez refaire une recherche.");
+        }
+
     }
 
     private boolean checkPermission(String permission) {
@@ -130,4 +172,7 @@ public class LocalisationActivity extends AppCompatActivity {
         return placeFields;
     }
 
+    public void nextPlace(View view) {
+        nextPlace();
+    }
 }

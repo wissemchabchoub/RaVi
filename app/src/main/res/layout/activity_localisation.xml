@@ -18,6 +18,13 @@
             android:layout_height="wrap_content"
             android:text="Rechercher les lieux près de moi"/>
 
+        <Button
+            android:id="@+id/next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Suivant"
+            android:onClick="nextPlace"/>
+
 
         <ProgressBar
             android:id="@+id/loading"

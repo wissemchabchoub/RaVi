@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseDatabase mDatabase;
     private FirebaseUser currentUser;
     private User user;
-    private List placesOfInterest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +55,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 user = dataSnapshot.getValue(User.class);
-                placesOfInterest = user.preferences.get("placesOfInterest"); // A UTILISER UNIQUEMENT DANS onDataChange()
                 if(!user.isQuizzDone()) startActivity(new Intent(MainActivity.this, Interests.class));
+                else {
+                    Intent toLocalisation = new Intent(MainActivity.this, LocalisationActivity.class);
+                    toLocalisation.putExtra("preferences", user.preferences.get("placesOfInterest").toString());
+                    startActivity(toLocalisation);
+                }
+
             }
 
             @Override
