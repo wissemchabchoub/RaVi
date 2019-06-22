@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.ravi.Authentification.User;
 import com.example.ravi.R;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
@@ -194,7 +196,7 @@ public class LocalisationActivity extends AppCompatActivity implements OnDSListe
         List<Place.Field> placeFields = new ArrayList<>(Arrays.asList(Place.Field.values()));
         placeFields.removeAll(Arrays.asList(
                 Place.Field.ID,
-                Place.Field.LAT_LNG,
+                //Place.Field.LAT_LNG,
                 Place.Field.PHOTO_METADATAS,
                 Place.Field.PLUS_CODE,
                 Place.Field.PRICE_LEVEL,
@@ -237,6 +239,30 @@ public class LocalisationActivity extends AppCompatActivity implements OnDSListe
                 finalSpeechResult.toLowerCase().contains("suivant")) {
             nextPlace();
         }
+
+        // si le mot "OK" est prononcé, on affiche le site web du lieu
+        if (finalSpeechResult.equalsIgnoreCase("OK") ||
+                finalSpeechResult.toLowerCase().contains("ok")) {
+            mapsPlace();
+        }
+    }
+
+    private void mapsPlace() {
+
+        if(places.size() != 0 && placeNum < places.size()) {
+            LatLng data = places.get(placeNum).getLatLng();
+            Uri gmmIntentUri = Uri.parse("google.navigation:q=" + data.latitude + "," + data.longitude);
+
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+            mapIntent.setPackage("com.google.android.apps.maps");
+            if (mapIntent.resolveActivity(getPackageManager()) != null) {
+                startActivity(mapIntent);
+            }
+        }
+        else {
+            responseView.setText("Avant d'accéder à un lieu, veuillez effectuer une recherche");
+        }
+
     }
 
     @Override
