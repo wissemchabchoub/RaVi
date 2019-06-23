@@ -240,7 +240,7 @@ public class LocalisationActivity extends AppCompatActivity implements OnDSListe
             nextPlace();
         }
 
-        // si le mot "OK" est prononcé, on affiche le site web du lieu
+        // si le mot "OK" est prononcé, on affiche l'itinéraire pour se rendre à la destination choisie
         if (finalSpeechResult.equalsIgnoreCase("OK") ||
                 finalSpeechResult.toLowerCase().contains("ok")) {
             mapsPlace();
