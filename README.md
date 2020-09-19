@@ -7,8 +7,7 @@
 
 ## 🧐 About <a name = "about"></a>
 
-This is an Android Studio project of an application that uses Google API, DroidSpeech for voice recognition and predefined user prederences to give personalized points of intersts
-while visiting a certain area.
+This is an Android Studio project of an application that uses Google API, DroidSpeech for voice recognition and predefined user preferences to give personalized points of interests while visiting a certain area.
 
 
 
